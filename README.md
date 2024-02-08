@@ -1,4 +1,4 @@
-# Plugin Template
+# Vinícola Araucária
 
 ## Changelog
 
