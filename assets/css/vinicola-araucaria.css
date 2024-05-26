@@ -1,0 +1,24 @@
+.single-product.use-tour .product-summary .quantity,
+.single-product.use-tour .product-summary .price-wrapper {
+    display: none !important;
+}
+
+.single-product.use-tour .single_add_to_cart_button:disabled {
+    pointer-events: none;
+}
+
+.woocommerce-cart .product-type-tour .product-quantity {
+    position: relative;
+}
+
+.woocommerce-cart .product-type-tour .product-quantity::after {
+    content: "--";
+    font-weight: 800;
+    left: 0;
+    position: relative;
+    top: 0;
+}
+
+.woocommerce-cart .product-type-tour .product-quantity .quantity {
+    display: none !important;
+}
