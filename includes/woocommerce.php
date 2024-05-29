@@ -9,7 +9,7 @@ add_filter( 'woocommerce_product_data_tabs', 'VinicolaAraucaria\\add_custom_prod
  */
 function add_custom_product_data_tab( $tabs ) {
     global $post, $product_object;
-    $product = wc_get_product($post->ID);
+    $product = wc_get_product( $post->ID );
     if ( $product && 'variable' === $product->get_type() ) {
         $tabs['tour-settings'] = [
             'label'    => __( 'Visita Guiada', 'araucaria' ),
@@ -72,6 +72,47 @@ function add_custom_product_data_panel() {
                         'wrapper_class'     => 'show_if_personal_price'
                     ]
                 );
+
+                woocommerce_wp_text_input(
+                    [
+                        'id'                => '_adult_qty',
+                        'label'             => __( 'Quantidade máxima de adultos', 'araucaria' ),
+                        'desc_tip'          => 'true',
+                        'description'       => __( 'Adicione um limite máximo de adultos para a visita.', 'araucaria' ),
+                        'type'              => 'number',
+                        'custom_attributes' => [
+                            'step' => 'any',
+                            'min'  => '1'
+                        ],
+                        'wrapper_class'     => 'show_if_personal_price'
+                    ]
+                );
+
+                woocommerce_wp_text_input(
+                    [
+                        'id'                => '_child_qty',
+                        'label'             => __( 'Quantidade máxima de crianças', 'araucaria' ),
+                        'desc_tip'          => 'true',
+                        'description'       => __( 'Adicione um limite máximo de crianças para a visita.', 'araucaria' ),
+                        'type'              => 'number',
+                        'custom_attributes' => [
+                            'step' => 'any',
+                            'min'  => '0'
+                        ],
+                        'wrapper_class'     => 'show_if_personal_price'
+                    ]
+                );
+
+                woocommerce_wp_textarea_input(
+                    [
+                        'id'            => '_terms_tour',
+                        'label'         => __( 'Termos de aceite para a visita guiada', 'araucaria' ),
+                        'placeholder'   => __( 'Escreva aqui os temos de aceite para a visita guiada', 'araucaria' ),
+                        'desc_tip'      => true,
+                        'description'   => __( 'Escreva aqui os temos de aceite para a visita guiada', 'araucaria' ),
+                        'wrapper_class' => 'show_if_personal_price'
+                    ]
+                );
             ?>
         </div>
     </div>
@@ -108,6 +149,15 @@ function save_tour_settings_fields( $post_id ) {
         }
         if ( isset( $_POST['_child_price'] ) ) {
             update_post_meta( $post_id, '_child_price', sanitize_text_field( $_POST['_child_price'] ) );
+        }
+        if ( isset( $_POST['_adult_qty'] ) ) {
+            update_post_meta( $post_id, '_adult_qty', sanitize_text_field( $_POST['_adult_qty'] ) );
+        }
+        if ( isset( $_POST['_child_qty'] ) ) {
+            update_post_meta( $post_id, '_child_qty', sanitize_text_field( $_POST['_child_qty'] ) );
+        }
+        if ( isset( $_POST['_terms_tour'] ) ) {
+            update_post_meta( $post_id, '_terms_tour', sanitize_textarea_field( $_POST['_terms_tour'] ) );
         }
     }
 }
@@ -147,14 +197,18 @@ function add_terms_and_conditions_checkbox() {
     $product_id = get_the_ID();
     $product    = wc_get_product( $product_id );
 
-    if ( $product && 'variable' === $product->get_type() ) {
+    $_use_tour = get_post_meta( $product_id, '_use_tour', true );
+    $_tour_terms = get_post_meta( $product_id, '_terms_tour', true );
+
+    if ( $product && 'variable' === $product->get_type() && $_use_tour === 'yes' ) {
     ?>
-        <p class="terms-and-conditions">
+        <div class="terms-and-conditions">
+            <?= apply_filters( 'the_content', $_tour_terms ) ?>
             <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
                 <input type="checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" name="terms_and_conditions" id="terms_and_conditions">
-                <span><?php esc_html_e( 'Ao prosseguir, você concorda com as políticas de visitas da Vinicola Araucária', 'araucaria' ); ?></span>&nbsp;<span class="required">*</span>
+                <span class="required">*</span><span>Li e aceito os termos</span>
             </label>
-        </p>
+        </div>
     <?php
     }
 }
@@ -194,7 +248,7 @@ add_filter( 'body_class', 'VinicolaAraucaria\\add_body_class' );
 /**
  * Adiciona classe "use-tour" ao body quando o produto é da tipo "tour"
  */
-function add_body_class($classes) {
+function add_body_class( $classes ) {
     if ( is_singular( 'product' ) ) {
         global $post;
         $_use_tour = get_post_meta( $post->ID, '_use_tour', true );
@@ -205,3 +259,27 @@ function add_body_class($classes) {
     return $classes;
 }
 
+add_filter( 'woocommerce_product_needs_shipping', 'VinicolaAraucaria\\check_product_needs_shipping', 10, 2 );
+
+/**
+ * Verifica se um produto precisa de envio.
+ *
+ * Esta função é um filtro para o hook 'woocommerce_product_needs_shipping' do WooCommerce.
+ * Ela verifica se o produto é do tipo 'variável' e se a meta-chave '_use_tour' está definida como 'yes'.
+ * Se essas condições forem atendidas, a função define que o produto não precisa de envio.
+ *
+ * @param bool $needs_shipping Indica se o produto precisa de envio ou não.
+ * @param WC_Product $product O objeto do produto.
+ *
+ * @return bool Retorna true se o produto precisa de envio, false caso contrário.
+ */
+function check_product_needs_shipping ( $needs_shipping, $product ) {
+    if ( $product->is_type( 'variable' ) ) {
+        $_use_tour = get_post_meta( $post->ID, '_use_tour', true );
+
+        if ( 'yes' === $_use_tour ) {
+            $needs_shipping = false;
+        }
+    }
+    return $needs_shipping;
+}

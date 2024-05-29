@@ -12,23 +12,25 @@ function add_custom_field_before_add_to_cart_button() {
     if ( $product && 'variable' === $product->get_type() && $_use_tour === 'yes' ) {
         $_adult_price = ( $_adult_price = get_post_meta( $product_id, '_adult_price', true ) ) ? $_adult_price : 0;
         $_child_price = ( $_child_price = get_post_meta( $product_id, '_child_price', true ) ) ? $_child_price : 0;
+        $_adult_qty   = ( $_adult_qty = get_post_meta( $product_id, '_adult_qty', true ) ) ? $_adult_qty : 1;
+        $_child_qty   = ( $_child_qty = get_post_meta( $product_id, '_child_qty', true ) ) ? $_child_qty : 0;
 
         if ( $_adult_price ) {
             echo '<div class="custom-field-wrap adult-price">';
             echo '<label for="adult_price">Quantidade de adultos</label>';
             echo '<select id="adult_price" name="adult_price">';
-            for ( $i = 1; $i <= 12; $i++ ) {
+            for ( $i = 1; $i <= $_adult_qty; $i++ ) {
                 echo '<option value="' . $i . '">' . $i . '</option>';
             }
             echo '</select>';
             echo '</div>';
         }
 
-        if ( $_child_price ) {
+        if ( $_child_price && $_child_qty >= 1 ) {
             echo '<div class="custom-field-wrap child-price">';
             echo '<label for="child_price">Quantidade de crianças</label>';
             echo '<select id="child_price" name="child_price">';
-            for ( $i = 0; $i <= 12; $i++ ) {
+            for ( $i = 0; $i <= $_child_qty; $i++ ) {
                 echo '<option value="' . $i . '">' . $i . '</option>';
             }
             echo '</select>';

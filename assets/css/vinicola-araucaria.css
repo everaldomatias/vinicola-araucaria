@@ -1,6 +1,66 @@
 .single-product.use-tour .product-summary .quantity,
-.single-product.use-tour .product-summary .price-wrapper {
+.single-product.use-tour .product-summary .price-wrapper,
+.single-product.use-tour .elementor-widget-wpr-product-price {
     display: none !important;
+}
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column !important;
+    gap: 1rem;
+}
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .custom-field-wrap {
+    width: 100%;
+}
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .custom-field-wrap label {
+    color: #222222;
+    font-family: "Poppins", Sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    padding: 7px 7px 7px 10px;
+}
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart select {
+    background-color: #FFFFFF;
+    border-color: #F3F3F3;
+    border-radius: 0px 0px 0px 0px;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    color: #777777;
+    font-family: "Poppins", Sans-serif;
+    font-size: 13px;
+    padding: 7px 7px 7px 7px;
+}
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .terms-and-conditions p {
+    color: #777777;
+    font-family: "Poppins", Sans-serif;
+    font-size: 13px;
+    margin-bottom: 1rem;
+}
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .terms-and-conditions span {
+    color: #333;
+    font-family: "Poppins", Sans-serif;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .terms-and-conditions span.required {
+    color: red;
+}
+
+
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .recalculate-total-price {
+    color: #57585A;
+    font-family: "Montserrat", Sans-serif;
+    font-size: 33px;
+    font-weight: 500;
+    text-align: left;
+    text-decoration: none;
 }
 
 .single-product.use-tour .single_add_to_cart_button:disabled {
@@ -19,6 +79,7 @@
     top: 0;
 }
 
-.woocommerce-cart .product-type-tour .product-quantity .quantity {
+.woocommerce-cart .product-type-tour .product-quantity .quantity,
+.single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .wpr-quantity-wrapper {
     display: none !important;
 }
