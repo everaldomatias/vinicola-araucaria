@@ -83,3 +83,14 @@
 .single-product.use-tour .single_variation_wrap .woocommerce-variation-add-to-cart .wpr-quantity-wrapper {
     display: none !important;
 }
+
+.single-product.use-tour #woocommerce-correios-calculo-de-frete-na-pagina-do-produto {
+    display: none !important;
+}
+
+.single-product.use-tour .single_variation_wrap .button.disabled.wc-variation-selection-needed {
+    background-color: #b18E19;
+    color: #FFFFFF;
+    opacity: 0.5;
+    pointer-events: none;
+}
