@@ -94,3 +94,7 @@
     opacity: 0.5;
     pointer-events: none;
 }
+
+.single-product.use-tour .elementor-widget-wrap .elementor-element-f2f5a58 {
+    display: none;
+}

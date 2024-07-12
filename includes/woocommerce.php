@@ -19,7 +19,7 @@ function add_custom_product_data_tab( $tabs ) {
                 'show_if_tour'
             ]
         ];
-        
+
         \uasort( $tabs, 'VinicolaAraucaria\\order_by_priority' );
     }
     return $tabs;
@@ -282,4 +282,17 @@ function check_product_needs_shipping ( $needs_shipping, $product ) {
         }
     }
     return $needs_shipping;
+}
+
+add_filter( 'woocommerce_product_single_add_to_cart_text', 'VinicolaAraucaria\\single_add_to_cart_button_text' );
+
+function single_add_to_cart_button_text( $text ) {
+
+    $_use_tour = get_post_meta( get_the_ID(), '_use_tour', true );
+
+    if ( $_use_tour === 'yes' ) {
+        return __( 'Reservar', 'araucaria' );
+    }
+
+    return $text;
 }
